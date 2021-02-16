@@ -15,3 +15,6 @@ So, if you would like to be a human evaulator
 Please do as many of these as you like. Once you are done, please send `final_result.csv` or whatever you set your `RESULT` variable to be to me over Discord or email (`hliu@shabang.cf`). Thanks much.
 
 
+Please note: these dataset are not 50/50 bot/human. One of the question is a traditional Turing test, where you are tasked with judging if the response is bot/human. If one of your response is "human", the other is not necesarily bot.
+
+

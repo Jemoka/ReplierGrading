@@ -145,9 +145,12 @@ def do(index, writer):
     print(f"{color.BOLD}Do over? ({color.RED}Y(0){color.END}/{color.BOLD}{color.GREEN}N(1){color.END}{color.BOLD}){color.END} or quit (Q)")
     do = getch.getch()
     if do == 'Q':
+        cursor.show()
         return [index, True]
     while do == 'Y' or do == '0':
         result = review(data, index)
+        print(f"Done with {index}/{total}. That's {((index/total)*100):.2f}%")
+        print(f"{color.BOLD}Do over? ({color.RED}Y(0){color.END}/{color.BOLD}{color.GREEN}N(1){color.END}{color.BOLD}){color.END} or quit (Q)")
         do = getch.getch()
     writer.writerow([index, REVIEWER, result["model"], result["isPsych"], result["botRubric"]["clarity"], result["botRubric"]["specificity"], result["botRubric"]["psycology"], result["humanRubric"]["clarity"], result["humanRubric"]["specificity"], result["humanRubric"]["psycology"], result["botTuring"], result["humanTuring"]])
     cursor.show()
