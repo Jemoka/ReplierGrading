@@ -1,0 +1,4 @@
+cursor==1.3.4
+getch==1.0
+prettytable==2.0.0
+wcwidth==0.2.5
