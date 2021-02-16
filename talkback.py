@@ -33,7 +33,7 @@ with open("./human_talkback_data.csv", "r") as df:
     for indx, row in enumerate(reader):
         data[indx].append(row[1])
 
-def rubric(data, index, evaluate=2):
+def rubric(data, index, evaluate=2, isPsych=False):
     x = PrettyTable()
     x.field_names = [f'{color.BLUE}{REVIEWER}/{color.BLUE}{index}{color.END}{color.BLUE} {color.BOLD}1{color.END}', f'{color.PURPLE}{data[0]}{color.END}', f'{color.UNDERLINE}{color.CYAN}Clarity categorization{color.END}']
     x.add_row(['Q/A', f'{data[1]}', f'{data[evaluate]}'])
@@ -64,19 +64,23 @@ def rubric(data, index, evaluate=2):
     os.system('clear')
 
 
-    x = PrettyTable()
-    x.field_names = [f'{color.BLUE}{REVIEWER}/{color.BLUE}{index}{color.END}{color.BLUE} {color.BOLD}1{color.END}', f'{color.PURPLE}{data[0]}{color.END}', f'{color.UNDERLINE}{color.CYAN}Psycological helpfulness categorization{color.END}']
-    x.add_row(['Q/A', f'{data[1]}', f'{data[evaluate]}'])
-    print(x)
-    print()
-    print("Please indicate the psycological helpfulness of the response.")
-    print()
-    print(f'{color.RED}{color.BOLD}1{color.END}{color.RED}: Negatively influences the issue {color.END}')
-    print(f'{color.ORANGE}{color.BOLD}2{color.END}{color.ORANGE}: Non-psych/does not address the issue {color.END}')
-    print(f'{color.YELLOW}{color.BOLD}3{color.END}{color.YELLOW}: Addresses the psycological issue {color.END}')
-    print(f'{color.GREEN}{color.BOLD}4{color.END}{color.GREEN}: Positively influences the issue {color.END}')
-    botPsych = getch.getch()
-    os.system('clear')
+    if isPsych:
+        x = PrettyTable()
+        x.field_names = [f'{color.BLUE}{REVIEWER}/{color.BLUE}{index}{color.END}{color.BLUE} {color.BOLD}1{color.END}', f'{color.PURPLE}{data[0]}{color.END}', f'{color.UNDERLINE}{color.CYAN}Psycological helpfulness categorization{color.END}']
+        x.add_row(['Q/A', f'{data[1]}', f'{data[evaluate]}'])
+        print(x)
+        print()
+        print("Please indicate the psycological helpfulness of the response.")
+        print()
+        print(f'{color.RED}{color.BOLD}1{color.END}{color.RED}: Negatively influences the issue {color.END}')
+        print(f'{color.ORANGE}{color.BOLD}2{color.END}{color.ORANGE}: Non-psych/does not address the issue {color.END}')
+        print(f'{color.YELLOW}{color.BOLD}3{color.END}{color.YELLOW}: Addresses the psycological issue {color.END}')
+        print(f'{color.GREEN}{color.BOLD}4{color.END}{color.GREEN}: Positively influences the issue {color.END}')
+        botPsych = getch.getch()
+        os.system('clear')
+
+    else:
+        botPsych = 2
 
 
     return {'clarity': int(botClarity), 'specificity': int(botSpecificity), 'psycology': int(botPsych)}
@@ -87,7 +91,7 @@ def turing(data, index, evaluate=2):
     x.add_row(['Q/A', f'{data[1]}', f'{data[evaluate]}'])
     print(x)
     print()
-    print("Please indicate the psycological helpfulness of the response.")
+    print("Was this response generated?")
     print()
     print(f'{color.RED}{color.BOLD}1{color.END}{color.RED}: Bot {color.END}')
     print(f'{color.YELLOW}{color.BOLD}2{color.END}{color.YELLOW}: Unsure {color.END}')
@@ -114,11 +118,11 @@ def review(db, index):
     os.system('clear')
     
     if random.uniform(0,1) < 0.5:
-        botRubric = rubric(data, index, 2)
-        humanRubric = rubric(data, index, 3)
+        botRubric = rubric(data, index, 2, isPsycology=='2')
+        humanRubric = rubric(data, index, 3, isPsycology=='2')
     else:
-        humanRubric = rubric(data, index, 3)
-        botRubric = rubric(data, index, 2)
+        humanRubric = rubric(data, index, 3, isPsycology=='2')
+        botRubric = rubric(data, index, 2, isPsycology=='2')
 
     if random.uniform(0,1) < 0.5:
         botTuring = turing(data, index, 2)
@@ -152,9 +156,10 @@ def do(index, writer):
 
 def execute():
     startIndex = int(input(f'''Are you ready to grade some sentences, {REVIEWER}?
-No? Too bad.
+No? Too bad. Except for this question, all other questions are single char responses
+that DOES NOT REQUIRE PRESSING ENTER. This will be the last time pressing return is needed.
 
-Where do you want to start from? 0 for start. ''').strip())-1
+Where do you want to start from? 0 for the start of data. ''').strip())-1
 
     df = open(RESULT, "a")
     writer = csv.writer(df)
