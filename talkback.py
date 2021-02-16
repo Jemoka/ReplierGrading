@@ -162,6 +162,13 @@ def execute():
 No? Too bad. Except for this question, all other questions are single char responses
 that DOES NOT REQUIRE PRESSING ENTER. This will be the last time pressing return is needed.
 
+Note: These dataset are not 50/50 bot/human. 
+One of the question is a traditional Turing test, where you are tasked with judging if 
+the response is bot/human.  If one of your response is "human", the other is not necesarily bot.
+
+{color.RED}{color.BOLD}DO NOT Ctrl-C THE SCRIPT. You will have an opportunity to quit after each question.{color.END}
+The file does not save without intentionally ending.
+
 Where do you want to start from? 0 for the start of data. ''').strip())-1
 
     df = open(RESULT, "a")
