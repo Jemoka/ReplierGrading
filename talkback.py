@@ -171,20 +171,20 @@ The file does not save without intentionally ending.
 
 Where do you want to start from? 0 for the start of data. ''').strip())-1
 
-    df = open(RESULT, "a")
-    writer = csv.writer(df)
     index = startIndex
     isEnded = False
     while isEnded == False:
         index+=1
+        df = open(RESULT, "a")
+        writer = csv.writer(df)
         index, isEnded = do(index, writer)
+        df.close()
 
     if isEnded:
         print(f'Ended. Next time start from {index}')
     else:
         print("Ok. That's it. Thank you.")
 
-    df.close()
 
 execute()
 
